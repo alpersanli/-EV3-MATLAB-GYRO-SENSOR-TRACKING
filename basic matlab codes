@@ -1,0 +1,35 @@
+%I wrote basicly gyro sensor tracking.You can see slopes when you move your lego ev3. on matlab
+
+clear all 
+close all 
+clc
+
+apple = legoev3; 
+writeLCD(apple,'BURSASPOR',1,1); 
+beep(apple); 
+pause(1); 
+playTone(apple,400.0,0.5,30);
+
+mygyrosensor=gyroSensor(apple);
+
+% initialize x and keep_y x=0; keep_y = [];
+i=0; 
+while i<5 
+y = readRotationAngle(mygyrosensor);
+
+pause(1);
+mymotor1 = motor(apple, 'A');              
+mymotor2 = motor(apple, 'D');
+mymotor1.Speed=30; 
+mymotor2.Speed=30; 
+start(mymotor1); 
+start(mymotor2);
+
+pause(1);
+
+keep_y = [keep_y y];
+plot(x,keep_y, 'b-o');
+x=[x x(end)+1];
+i = i+1;
+end stop(mymotor1); 
+stop(mymotor2);
